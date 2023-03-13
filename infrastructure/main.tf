@@ -12,6 +12,15 @@ provider "azurerm" {
   features {}
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "test-blob-rg"
+    storage_account_name = "tf-state-storage"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
 # Create a resource group
 resource "azurerm_resource_group" "test_rg" {
   name     = "test-rg"
@@ -26,17 +35,17 @@ resource "azurerm_container_group" "test_cg" {
   dns_name_label      = "aci-label"
   os_type             = "Linux"
 
-container {
-  name   = "weather-app"
-  image  = "mcr.microsoft.com/azuredocs/aci-helloworld:latest"
-  cpu    = "1"
-  memory = "1"
+  container {
+    name   = "weather-app"
+    image  = "mcr.microsoft.com/azuredocs/aci-helloworld:latest"
+    cpu    = "1"
+    memory = "1"
 
-  ports {
-    port     = 80
-    protocol = "TCP"
+    ports {
+      port     = 80
+      protocol = "TCP"
+    }
   }
-}
 
 }
 
