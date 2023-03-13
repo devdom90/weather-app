@@ -27,3 +27,27 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         addBaseImageData: false
+- stage: Provision
+  displayName: 'provisiong infrstructure w. Terrform'
+  dependsOn: Build
+  jobs:
+    - job: 'provision'
+      displayName: 'create container instance'
+      pool:
+        vmImage: 'ubuntu-latest'
+      variables:
+        - group: Terraform Service Principal
+      steps:
+        - script: 
+            set -e
+
+            terraform init -input=false
+            terraform apply -auto-approve
+          name: 'runTerraform'
+          displayName: 'running Terraform'
+          env:
+            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+            ARM_CLIENT_SECRET: $(ARM_SECRET_ID)
+            ARM_TENANT_ID: $(ARM_TENANT_ID)
+            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+            
