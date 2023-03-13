@@ -1,3 +1,4 @@
 /weather-app/.env
 /infrastructure/.terraform
 /weather-app/node_modules
+/infrastructure/.terraform.lock.hcl
