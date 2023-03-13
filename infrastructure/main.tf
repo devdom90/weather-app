@@ -21,6 +21,12 @@ terraform {
   }
 }
 
+variable "imagebuild" {
+  type = string
+  default = ""
+  description = "Image latest"
+}
+
 # Create a resource group
 resource "azurerm_resource_group" "test_rg" {
   name     = "test-rg"
@@ -37,7 +43,7 @@ resource "azurerm_container_group" "test_cg" {
 
   container {
     name   = "weather-app"
-    image  = "mcr.microsoft.com/azuredocs/aci-helloworld:latest"
+    image  = "devdom/weather-app:${var.imagebuild}"
     cpu    = "1"
     memory = "1"
 
